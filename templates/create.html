@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{user_title}}</title>
+</head>
+<body>
+    <h1></h1>
+    <form id="imageForm" enctype="multipart/form-data" action='/create/{{user_id}}/download' method="POST">
+        <img src="{{user_image}}" alt="Image_Frame">
+        <h4>{{user_title}}</h4>
+        <input type="file" name="user_image" accept="image/png"><br>
+        <button type="submit" id="submitButton">Show your support</button>
+    </form>
+
+    <div id="resultImage"></div>
+
+    <script>
+        function uploadImages(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const formData = new FormData(document.getElementById('imageForm'));
+            var user_id = {{ user_id }};
+            var fetch_url = '/create/' + user_id + '/download';
+        
+            fetch(fetch_url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Image merging failed with status ${response.status}`);
+                }
+                return response.text(); // assuming the response is text
+            })
+            .then(data => {
+                // Update UI or handle the response here
+                document.getElementById('resultImage').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+                // Display error message or handle errors here
+            });
+        
+        
+        // Attach the function to the form submission
+        document.getElementById('imageForm').addEventListener('submit', uploadImages);
+        
+           
+        }
+    </script>
+</body>
+</html>
