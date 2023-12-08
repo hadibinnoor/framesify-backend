@@ -168,5 +168,3 @@ def image_rendering(user_id):
         else:
     # Handle the error accordingly, e.g., return an error response
             return jsonify({'error': 'Image processing failed'})
-if __name__ == '__main__':
-    app.run(debug=True)
